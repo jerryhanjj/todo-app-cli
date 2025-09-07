@@ -2,7 +2,7 @@
 
 # 变量定义
 BINARY_NAME=todo
-MAIN_PATH=cmd/main.go
+MAIN_PATH=main.go
 BUILD_DIR=build
 
 # 默认目标
