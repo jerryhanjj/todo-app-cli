@@ -8,6 +8,14 @@ import (
 	"github.com/jerryhanjj/todo-app-cli/internal/todo"
 )
 
+// getIDByIndex converts a display index (1-based) to the actual todo ID
+func getIDByIndex(todos []todo.Todo, index int) (int, error) {
+	if index < 1 || index > len(todos) {
+		return 0, fmt.Errorf("序号 %d 超出范围 (1-%d)", index, len(todos))
+	}
+	return todos[index-1].ID, nil
+}
+
 func main() {
 	// Initialize todo list
 	todoList := todo.NewTodoList()
@@ -48,12 +56,12 @@ func main() {
 			fmt.Println("No todos found")
 		} else {
 			fmt.Println("Todos:")
-			for _, t := range todos {
+			for index, t := range todos {
 				status := " "
 				if t.Complete {
 					status = "✓"
 				}
-				fmt.Printf("[%s] %d: %s\n", status, t.ID, t.Task)
+				fmt.Printf("[%s] %d: %s\n", status, index+1, t.Task)
 			}
 		}
 
@@ -62,34 +70,52 @@ func main() {
 			fmt.Println("Please provide a todo ID to complete")
 			os.Exit(1)
 		}
-		id, err := strconv.Atoi(os.Args[2])
+		index, err := strconv.Atoi(os.Args[2])
 		if err != nil {
 			fmt.Println("Please provide a valid todo ID")
 			os.Exit(1)
 		}
-		err = todoList.Complete(id)
+
+		// Get all todos to convert index to ID
+		todos := todoList.List()
+		actualID, err := getIDByIndex(todos, index)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Completed todo #%d\n", id)
+
+		err = todoList.Complete(actualID)
+		if err != nil {
+			fmt.Printf("Error: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Completed todo #%d\n", index)
 
 	case "delete":
 		if len(os.Args) < 3 {
 			fmt.Println("Please provide a todo ID to delete")
 			os.Exit(1)
 		}
-		id, err := strconv.Atoi(os.Args[2])
+		index, err := strconv.Atoi(os.Args[2])
 		if err != nil {
 			fmt.Println("Please provide a valid todo ID")
 			os.Exit(1)
 		}
-		err = todoList.Delete(id)
+
+		// Get all todos to convert index to ID
+		todos := todoList.List()
+		actualID, err := getIDByIndex(todos, index)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Deleted todo #%d\n", id)
+
+		err = todoList.Delete(actualID)
+		if err != nil {
+			fmt.Printf("Error: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Deleted todo #%d\n", index)
 
 	default:
 		fmt.Printf("Unknown command: %s\n", command)

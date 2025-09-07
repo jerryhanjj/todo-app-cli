@@ -25,9 +25,20 @@ func NewTodoList() *TodoList {
 	}
 }
 
+// getNextID generates a safe, unique ID for new todos
+func (tl *TodoList) getNextID() int {
+	maxID := 0
+	for _, todo := range tl.Todos {
+		if todo.ID > maxID {
+			maxID = todo.ID
+		}
+	}
+	return maxID + 1
+}
+
 // Add adds a new todo to the list
 func (tl *TodoList) Add(task string) {
-	newID := len(tl.Todos) + 1
+	newID := tl.getNextID()
 	todo := Todo{
 		ID:       newID,
 		Task:     task,
