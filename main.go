@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/jerryhanjj/todo-app-cli/internal/todo"
@@ -21,7 +22,9 @@ func main() {
 	todoList := todo.NewTodoList()
 
 	// Load existing todos
-	err := todoList.Load("data/todos.json")
+	dataDir := "data"
+	todoFile := filepath.Join(dataDir, "todos.json")
+	err := todoList.Load(todoFile)
 	if err != nil {
 		fmt.Printf("Error loading todos: %v\n", err)
 		os.Exit(1)
@@ -123,7 +126,7 @@ func main() {
 	}
 
 	// Save todos
-	err = todoList.Save("data/todos.json")
+	err = todoList.Save(todoFile)
 	if err != nil {
 		fmt.Printf("Error saving todos: %v\n", err)
 		os.Exit(1)

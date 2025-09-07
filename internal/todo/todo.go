@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 // Todo represents a single todo item
@@ -80,7 +81,16 @@ func (tl *TodoList) Save(filename string) error {
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(filename, data, 0644)
+	
+	// Create directory if it doesn't exist
+	dir := filepath.Dir(filename)
+	if dir != "." && dir != "" {
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			return err
+		}
+	}
+	
+	return os.WriteFile(filename, data, 0666)
 }
 
 // Load loads the todo list from a file
