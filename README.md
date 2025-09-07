@@ -165,8 +165,8 @@ todo-app-cli/
 ├── go.mod                   # Go module file
 ├── go.sum                   # Go dependency checksum file
 ├── LICENSE                  # License file
-├── README.md                # Project documentation (Chinese)
-└── README_EN.md             # Project documentation (English)
+├── README_ZH.md             # Project documentation (Chinese)
+└── README.md                # Project documentation (English)
 ```
 
 ## 🔧 Development Setup
@@ -265,7 +265,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you encounter any issues or have suggestions, please:
 
 1. [Create an Issue](https://github.com/jerryhanjj/todo-app-cli/issues)
-2. Email: jerry.han.dev@gmail.com
+2. Email: jerryhanjj@126.com
 3. Star ⭐ this project on GitHub
 
 ## 🙏 Acknowledgments

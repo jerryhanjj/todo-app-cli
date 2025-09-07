@@ -165,8 +165,8 @@ todo-app-cli/
 ├── go.mod                   # Go模块文件
 ├── go.sum                   # Go依赖校验文件
 ├── LICENSE                  # 许可证文件
-├── README.md                # 项目说明文档（中文）
-└── README_EN.md             # 项目说明文档（英文）
+├── README_ZH.md             # 项目说明文档（中文）
+└── README.md                # 项目说明文档（英文）
 ```
 
 ## 🔧 开发环境设置
@@ -265,7 +265,7 @@ make vet           # 代码检查
 如果你遇到任何问题或有建议，请：
 
 1. [创建Issue](https://github.com/jerryhanjj/todo-app-cli/issues)
-2. 邮件联系：jerry.han.dev@gmail.com
+2. 邮件联系：jerryhanjj@126.com
 3. 在GitHub上start ⭐ 这个项目
 
 ## 🙏 致谢
