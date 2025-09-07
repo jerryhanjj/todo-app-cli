@@ -19,7 +19,22 @@ A simple yet powerful command-line todo application written in Go.
 
 ## 📦 Installation
 
-### Method 1: Install from Source (Recommended)
+### Method 1: Install using Go Install (Recommended)
+
+**Prerequisites:** Go 1.19 or higher required
+
+```bash
+# Install the latest version
+go install github.com/jerryhanjj/todo-app-cli@latest
+
+# Or install a specific version (e.g., v1.0.0)
+go install github.com/jerryhanjj/todo-app-cli@v1.0.0
+
+# Run the application
+todo-app-cli list
+```
+
+### Method 2: Install from Source
 
 **Prerequisites:** Go 1.19 or higher required
 
@@ -29,13 +44,13 @@ git clone https://github.com/jerryhanjj/todo-app-cli.git
 cd todo-app-cli
 
 # 2. Build the executable
-go build -o todo cmd/main.go
+go build -o todo main.go
 
 # 3. Run the application
 ./todo list
 ```
 
-### Method 2: Direct Run (Development Mode)
+### Method 3: Direct Run (Development Mode)
 
 ```bash
 # Clone the repository
@@ -43,10 +58,10 @@ git clone https://github.com/jerryhanjj/todo-app-cli.git
 cd todo-app-cli
 
 # Run directly (recompiles each time)
-go run cmd/main.go list
+go run main.go list
 ```
 
-### Method 3: Using Makefile (Recommended for Developers)
+### Method 4: Using Makefile (Recommended for Developers)
 
 ```bash
 # Clone the repository
@@ -64,11 +79,11 @@ make run ARGS="list"
 make run ARGS="add 'New Task'"
 ```
 
-### Method 4: Install to System PATH
+### Method 5: Install to System PATH
 
 ```bash
 # In the project directory
-go build -o todo cmd/main.go
+go build -o todo main.go
 
 # Move to system PATH directory (optional)
 sudo mv todo /usr/local/bin/
@@ -140,8 +155,7 @@ Todos:
 
 ```
 todo-app-cli/
-├── cmd/
-│   └── main.go              # Application entry point
+├── main.go                  # Application entry point
 ├── internal/
 │   └── todo/
 │       └── todo.go          # Todo logic and data structures
@@ -179,8 +193,8 @@ make fmt                      # Format code
 make clean                    # Clean build files
 
 # 4. Or use traditional way
-go run cmd/main.go list
-go build -o todo cmd/main.go
+go run main.go list
+go build -o todo main.go
 ```
 
 ### Makefile Commands

@@ -19,7 +19,22 @@
 
 ## 📦 安装方法
 
-### 方法1：从源码安装（推荐）
+### 方法1：使用Go Install安装（推荐）
+
+**前提条件：** 需要安装Go 1.19或更高版本
+
+```bash
+# 安装最新版本
+go install github.com/jerryhanjj/todo-app-cli@latest
+
+# 或者安装特定版本（例如v1.0.0）
+go install github.com/jerryhanjj/todo-app-cli@v1.0.0
+
+# 运行应用
+todo-app-cli list
+```
+
+### 方法2：从源码安装
 
 **前提条件：** 需要安装Go 1.19或更高版本
 
@@ -29,13 +44,13 @@ git clone https://github.com/jerryhanjj/todo-app-cli.git
 cd todo-app-cli
 
 # 2. 构建可执行文件
-go build -o todo cmd/main.go
+go build -o todo main.go
 
 # 3. 运行应用
 ./todo list
 ```
 
-### 方法2：直接运行（开发模式）
+### 方法3：直接运行（开发模式）
 
 ```bash
 # 克隆仓库
@@ -43,10 +58,10 @@ git clone https://github.com/jerryhanjj/todo-app-cli.git
 cd todo-app-cli
 
 # 直接运行（每次都会重新编译）
-go run cmd/main.go list
+go run main.go list
 ```
 
-### 方法3：使用Makefile（推荐给开发者）
+### 方法4：使用Makefile（推荐给开发者）
 
 ```bash
 # 克隆仓库
@@ -64,11 +79,11 @@ make run ARGS="list"
 make run ARGS="add '新任务'"
 ```
 
-### 方法4：安装到系统PATH
+### 方法5：安装到系统PATH
 
 ```bash
 # 在项目目录下执行
-go build -o todo cmd/main.go
+go build -o todo main.go
 
 # 移动到系统PATH目录（可选）
 sudo mv todo /usr/local/bin/
@@ -140,8 +155,7 @@ Todos:
 
 ```
 todo-app-cli/
-├── cmd/
-│   └── main.go              # 应用程序入口点
+├── main.go                  # 应用程序入口点
 ├── internal/
 │   └── todo/
 │       └── todo.go          # 待办事项逻辑和数据结构
@@ -179,8 +193,8 @@ make fmt                      # 格式化代码
 make clean                    # 清理构建文件
 
 # 4. 或者传统方式
-go run cmd/main.go list
-go build -o todo cmd/main.go
+go run main.go list
+go build -o todo main.go
 ```
 
 ### Makefile命令
