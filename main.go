@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
 
 	"github.com/jerryhanjj/todo-app-cli/internal/todo"
+	"github.com/spf13/pflag"
 )
 
 // getIDByIndex converts a display index (1-based) to the actual todo ID
@@ -30,30 +30,48 @@ func main() {
 		os.Exit(1)
 	}
 
-	if len(os.Args) < 2 {
+	// Define command flags
+	var (
+		addTask    = pflag.StringP("add", "a", "", "Add a new todo")
+		listTodos  = pflag.BoolP("list", "l", false, "List all todos")
+		completeID = pflag.IntP("complete", "c", 0, "Mark a todo as complete by ID")
+		deleteID   = pflag.IntP("delete", "d", 0, "Delete a todo by ID")
+		help       = pflag.BoolP("help", "h", false, "Show help message")
+	)
+
+	// Custom usage function
+	pflag.Usage = func() {
 		fmt.Println("Welcome to Todo App!")
-		fmt.Println("Usage: todo [add|list|complete|delete] [arguments]")
-		fmt.Println("Commands:")
-		fmt.Println("  add <task>        - Add a new todo")
-		fmt.Println("  list              - List all todos")
-		fmt.Println("  complete <id>     - Mark a todo as complete")
-		fmt.Println("  delete <id>       - Delete a todo")
-		os.Exit(1)
+		fmt.Println("Usage: todo [OPTIONS]")
+		fmt.Println("\nOptions:")
+		fmt.Println("  -a, --add <task>      Add a new todo")
+		fmt.Println("  -l, --list            List all todos")
+		fmt.Println("  -c, --complete <id>   Mark a todo as complete")
+		fmt.Println("  -d, --delete <id>     Delete a todo")
+		fmt.Println("  -h, --help            Show this help message")
+		fmt.Println("\nExamples:")
+		fmt.Println("  todo -a \"Buy groceries\"")
+		fmt.Println("  todo -l")
+		fmt.Println("  todo -c 1")
+		fmt.Println("  todo -d 2")
 	}
 
-	command := os.Args[1]
+	pflag.Parse()
 
-	switch command {
-	case "add":
-		if len(os.Args) < 3 {
-			fmt.Println("Please provide a task to add")
-			os.Exit(1)
-		}
-		task := os.Args[2]
-		todoList.Add(task)
-		fmt.Printf("Added todo: %s\n", task)
+	// Show help if requested or no flags provided
+	if *help || pflag.NFlag() == 0 {
+		pflag.Usage()
+		os.Exit(0)
+	}
 
-	case "list":
+	// Process add command
+	if *addTask != "" {
+		todoList.Add(*addTask)
+		fmt.Printf("Added todo: %s\n", *addTask)
+	}
+
+	// Process list command
+	if *listTodos {
 		todos := todoList.List()
 		if len(todos) == 0 {
 			fmt.Println("No todos found")
@@ -67,21 +85,12 @@ func main() {
 				fmt.Printf("[%s] %d: %s\n", status, index+1, t.Task)
 			}
 		}
+	}
 
-	case "complete":
-		if len(os.Args) < 3 {
-			fmt.Println("Please provide a todo ID to complete")
-			os.Exit(1)
-		}
-		index, err := strconv.Atoi(os.Args[2])
-		if err != nil {
-			fmt.Println("Please provide a valid todo ID")
-			os.Exit(1)
-		}
-
-		// Get all todos to convert index to ID
+	// Process complete command
+	if *completeID > 0 {
 		todos := todoList.List()
-		actualID, err := getIDByIndex(todos, index)
+		actualID, err := getIDByIndex(todos, *completeID)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			os.Exit(1)
@@ -92,22 +101,13 @@ func main() {
 			fmt.Printf("Error: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Completed todo #%d\n", index)
+		fmt.Printf("Completed todo #%d\n", *completeID)
+	}
 
-	case "delete":
-		if len(os.Args) < 3 {
-			fmt.Println("Please provide a todo ID to delete")
-			os.Exit(1)
-		}
-		index, err := strconv.Atoi(os.Args[2])
-		if err != nil {
-			fmt.Println("Please provide a valid todo ID")
-			os.Exit(1)
-		}
-
-		// Get all todos to convert index to ID
+	// Process delete command
+	if *deleteID > 0 {
 		todos := todoList.List()
-		actualID, err := getIDByIndex(todos, index)
+		actualID, err := getIDByIndex(todos, *deleteID)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			os.Exit(1)
@@ -118,11 +118,7 @@ func main() {
 			fmt.Printf("Error: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Deleted todo #%d\n", index)
-
-	default:
-		fmt.Printf("Unknown command: %s\n", command)
-		os.Exit(1)
+		fmt.Printf("Deleted todo #%d\n", *deleteID)
 	}
 
 	// Save todos
