@@ -16,6 +16,10 @@ A simple yet powerful command-line todo application written in Go.
 - 💾 Persistent storage using JSON format
 - 🔢 Smart index management (continuous display numbers)
 - 🛡️ Secure ID generation mechanism
+- 🎯 Modern subcommand interface with Cobra
+- 🔄 Backward compatibility with flag-based usage
+- 📚 Auto-generated help documentation
+- 🎨 Command aliases for better user experience
 
 ## 📦 Installation
 
@@ -98,31 +102,79 @@ todo list
 ## 🚀 Quick Start
 
 ```bash
-# Add your first todo
+# View help information
+./todo --help
+
+# Modern subcommand approach (recommended)
 ./todo add "Learn Go programming"
-
-# View all todos
 ./todo list
-
-# Complete the first todo
 ./todo complete 1
-
-# Delete the second todo
 ./todo delete 2
+
+# Legacy flag approach (backward compatible)
+./todo -a "Learn Go programming"
+./todo -l
+./todo -c 1
+./todo -d 2
 ```
 
 ## 📖 Detailed Usage
 
+### Two Usage Approaches
+
+This tool supports two usage approaches - choose based on your preference:
+
+#### Approach 1: Subcommand Style (Recommended)
+```bash
+./todo add "Buy groceries"    # Add todo
+./todo list                   # View list
+./todo complete 1             # Complete item 1
+./todo delete 2               # Delete item 2
+```
+
+#### Approach 2: Flag Style (Legacy Compatible)
+```bash
+./todo -a "Buy groceries"     # Add todo
+./todo -l                     # View list
+./todo -c 1                   # Complete item 1
+./todo -d 2                   # Delete item 2
+```
+
+### Getting Help
+```bash
+# View main command help
+./todo --help
+
+# View subcommand help
+./todo add --help
+./todo list --help
+./todo complete --help
+./todo delete --help
+```
+
 ### Adding Todos
 ```bash
+# Subcommand style
 ./todo add "Buy groceries"
 ./todo add "Write code"
 ./todo add "Exercise"
+
+# Flag style
+./todo -a "Buy groceries"
+./todo --add "Write code"
 ```
 
 ### Viewing Todo List
 ```bash
+# Subcommand style
 ./todo list
+# Or use aliases
+./todo ls
+./todo l
+
+# Flag style
+./todo -l
+./todo --list
 ```
 Example output:
 ```
@@ -135,19 +187,51 @@ Todos:
 ### Completing Todos
 ```bash
 # Complete a todo using its index number
+
+# Subcommand style
 ./todo complete 2
+# Or use aliases
+./todo done 2
+./todo c 2
+
+# Flag style
+./todo -c 2
+./todo --complete 2
 ```
 
 ### Deleting Todos
 ```bash
 # Delete a todo using its index number
 ./todo delete 3
+# Or use aliases
+./todo del 3
+./todo d 3
+./todo rm 3
+
+# Flag style
+./todo -d 3
+./todo --delete 3
 ```
 
-### Getting Help
-```bash
-./todo
-# or
+## 🎯 Command Overview
+
+### Subcommand Style
+| Command | Aliases | Description | Example |
+|---------|---------|-------------|---------|
+| `add` | - | Add a new todo item | `todo add "Buy groceries"` |
+| `list` | `ls`, `l` | Display all todo items | `todo list` |
+| `complete` | `done`, `c` | Mark todo as complete | `todo complete 1` |
+| `delete` | `del`, `d`, `rm` | Delete a todo item | `todo delete 2` |
+| `help` | - | Show help information | `todo help` |
+
+### Flag Style (Legacy Compatible)
+| Short Flag | Long Flag | Description | Example |
+|------------|-----------|-------------|---------|
+| `-a` | `--add` | Add a new todo item | `todo -a "Buy groceries"` |
+| `-l` | `--list` | Display all todo items | `todo -l` |
+| `-c` | `--complete` | Mark todo as complete | `todo -c 1` |
+| `-d` | `--delete` | Delete a todo item | `todo -d 2` |
+| `-h` | `--help` | Show help information | `todo -h` |
 ./todo help
 ```
 
@@ -245,7 +329,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Add todo priority levels
 - [ ] Support todo categories/tags
 - [ ] Add due date functionality
-- [ ] Export functionality (CSV, TXT, etc.)
+- [ ] Export functionality (JSON, CSV, TXT, etc.)
 - [ ] Search and filter functionality
 - [ ] Colored output
 - [ ] Command-line auto-completion
@@ -253,12 +337,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Changelog
 
-### v1.0.0 (Current Version)
+### v2.0.0 (Current Version)
+- ✅ **Major Upgrade**: Migrated from pflag to Cobra framework
+- ✅ Modern subcommand interface (`todo add`, `todo list`, etc.)
+- ✅ **Backward Compatibility**: Still supports legacy flags (`-a`, `-l`, `-c`, `-d`)
+- ✅ Command aliases support (`ls`, `done`, `del`, etc.)
+- ✅ Auto-generated help documentation
+- ✅ Improved code organization with separate command files
+- ✅ Enhanced user experience with better error handling
+- ✅ Foundation for future feature expansions
+
+### v1.0.0 (Legacy Version)
 - ✅ Basic CRUD functionality
 - ✅ JSON persistent storage
 - ✅ Smart index management
 - ✅ User-friendly error messages
-- ✅ Comprehensive README documentation
+- ✅ pflag-based command line interface
 
 ## 🐛 Bug Reports
 
